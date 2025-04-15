@@ -74,11 +74,10 @@ def main(page: ft.Page):
     txtDistance = ft.Text(current_lang["distance"], size=12, color=ft.colors.GREY_600)
     txtElevation = ft.Text(current_lang["elevation"], size=12, color=ft.colors.GREY_600)
     txtTime = ft.Text(current_lang["time"], size=12, color=ft.colors.GREY_600)
-    txtViewMore = ft.Text(
-                current_lang["view_more_strava"].format(name=name),
-                color=ft.colors.BLUE,
-                style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE),
-            )
+    txtViewMore = ft.TextButton(
+        current_lang["view_more_strava"].format(name=name),
+        on_click=lambda e: e.page.launch_url(f"{domain}")
+    )
 
     page.add(
         ft.Text(f"{fullname}", size=24, color="#e7520b")
@@ -157,15 +156,7 @@ def main(page: ft.Page):
         ft.Column([linha, linha_horizontal]),
     )
 
-    link = ft.GestureDetector(
-        content=ft.Container(
-            content=txtViewMore,
-            padding=20,
-            border=ft.border.all(1, ft.colors.TRANSPARENT),
-           
-        ),
-        on_tap=lambda e: e.page.launch_url(f"{domain}")  # Evento aqui!
-    )
+    link = txtViewMore
 
     page.add(link)
    
