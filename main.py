@@ -4,15 +4,6 @@ from i18n import get_texts
 from mock import mock
 from strava import scrape_website
 
-import flet as ft
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-
-app = FastAPI()
-
-# Serve a pasta static/
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
 domain = 'https://www.strava.com/athletes/faustocps'
 
 def main(page: ft.Page):
@@ -38,8 +29,6 @@ def main(page: ft.Page):
         border_color="#fafafa",   
         focused_border_color="#fafafa",
         value=lang_code,
-        focused_color="#fafafa",  # Cor do texto selecionado
-        focused_bgcolor="#fafafa",  # Cor de fundo do item selecionado
         options=[
                 ft.dropdown.Option("pt", "Português"),
                 ft.dropdown.Option("en", "English"),
