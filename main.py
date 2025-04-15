@@ -75,9 +75,15 @@ def main(page: ft.Page):
     txtElevation = ft.Text(current_lang["elevation"], size=12, color=ft.colors.GREY_600)
     txtTime = ft.Text(current_lang["time"], size=12, color=ft.colors.GREY_600)
     txtViewMore = ft.TextButton(
-        current_lang["view_more_strava"].format(name=name),
-        on_click=lambda e: e.page.launch_url(f"{domain}")
-    )
+            current_lang["view_more_strava"].format(name=name),
+            url=domain
+        )
+    
+    # ft.TextButton(
+    #     current_lang["view_more_strava"].format(name=name),
+    #     on_click=lambda e: e.page.launch_url(f"{domain}")
+    # )
+
 
     page.add(
         ft.Text(f"{fullname}", size=24, color="#e7520b")
