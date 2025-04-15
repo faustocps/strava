@@ -147,6 +147,6 @@ def main(page: ft.Page):
         # Criar nome de arquivo
         # nome_arquivo = dominio.split('//')[-1].replace('/', '_') + '.txt'
         # save_content(conteudo, nome_arquivo)
-        print(conteudo)
+        # print(conteudo)
 
 ft.app(target=main)
