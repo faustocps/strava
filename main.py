@@ -1,35 +1,70 @@
 import flet as ft
 
+from i18n import get_texts
 from mock import mock
 from strava import scrape_website
-import time as sleep
+
+import flet as ft
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+
+app = FastAPI()
+
+# Serve a pasta static/
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+domain = 'https://www.strava.com/athletes/faustocps'
 
 def main(page: ft.Page):
-    page.title = "last physical activity"
+    lang_code = "pt"
+    current_lang = get_texts(lang_code)
+
+    def change_language(e):
+        nonlocal current_lang
+        current_lang = get_texts(e.control.value)
+        page.title = current_lang["title"]
+        page.appbar.title.value = current_lang["title"]
+        txtDistance.value = current_lang["distance"]
+        txtElevation.value = current_lang["elevation"]
+        txtTime.value = current_lang["time"]
+        txtViewMore.text = current_lang["view_more_strava"].format(name=name)
+        page.update()
+
+     
+    # Dropdown de idiomas
+    lang_selector = ft.Dropdown(
+        color="#fafafa",
+        bgcolor="#fafafa",# fundo da caixa
+        border_color="#fafafa",   
+        focused_border_color="#fafafa",
+        value=lang_code,
+        focused_color="#fafafa",  # Cor do texto selecionado
+        focused_bgcolor="#fafafa",  # Cor de fundo do item selecionado
+        options=[
+                ft.dropdown.Option("pt", "Português"),
+                ft.dropdown.Option("en", "English"),
+                ft.dropdown.Option("es", "Español")
+        ],
+        on_change=change_language,
+        width=140
+    )
+
+    page.title = current_lang["title"]
     page.bgcolor = "#fafafa"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    # loading = ft.Container(
-    #     content=ft.Column(
-    #         [ft.ProgressRing()],
-    #         alignment=ft.MainAxisAlignment.CENTER
-    #     ),
-    #     expand=True
-    # )
-    # page.add(loading)
-    # page.update()
+    page.appbar = ft.AppBar(
+        title=ft.Text(current_lang["title"], color="#fafafa"),
+        center_title=False,
+        bgcolor="#e7520b",
+        actions=[lang_selector],
+    )
 
-    # # Simula um carregamento
-    # sleep.sleep(2)
-
-    # page.clean()
-
-    domain = 'https://www.strava.com/athletes/47411883'
     
     # Coletar conteúdo
     conteudo =  scrape_website(domain)
-    #conteudo =  mock()#scrape_website(dominio)
+    # conteudo =  mock()#scrape_website(dominio)
 
     # Processar o texto: remover espaços e linhas vazias
     linhas_processadas = [linha.strip() for linha in conteudo.splitlines() if linha.strip()]
@@ -46,6 +81,18 @@ def main(page: ft.Page):
     time = linhas_processadas[16] if len(linhas_processadas) > 16 else None  
 
     print("name:", name)
+
+    txtDistance = ft.Text(current_lang["distance"], size=12, color=ft.colors.GREY_600)
+    txtElevation = ft.Text(current_lang["elevation"], size=12, color=ft.colors.GREY_600)
+    txtTime = ft.Text(current_lang["time"], size=12, color=ft.colors.GREY_600)
+    txtViewMore = ft.TextSpan(
+                    current_lang["view_more_strava"].format(name=name),
+                    on_click=lambda e: e.page.launch_url(f"{domain}"),
+                    style=ft.TextStyle(
+                        color=ft.colors.BLUE,
+                        decoration=ft.TextDecoration.UNDERLINE,
+                    )
+                )
 
     page.add(
         ft.Text(f"{fullname}", size=24, color="#e7520b")
@@ -73,7 +120,7 @@ def main(page: ft.Page):
                ft.Container(
                     content=ft.Row([
                         ft.Text(f"{type}", color="#e7520b", size=24),
-                        # ft.Icon(name=ft.Icons.PEDAL_BIKE, color="#e7520b", size=30),
+                        # ft.Icon(name=fts.icons.PEDAL_BIKE, color="#e7520b", size=30),
                         # ft.Icon(name="fa-regular fa-bicycle", color=ft.colors.ORANGE)  
                     ], 
                     alignment=ft.MainAxisAlignment.CENTER),
@@ -87,20 +134,20 @@ def main(page: ft.Page):
             # Coluna 1 - Distância
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{distance}", size=30, weight=ft.FontWeight.BOLD),
-                    ft.Text("Distância", size=12, color=ft.colors.GREY_600),
+                    ft.Text(f"{distance}", size=28, weight=ft.FontWeight.BOLD),
+                    txtDistance,
                 ], alignment=ft.MainAxisAlignment.CENTER),
-                width=150,
+                width=110,
                 height=100,
             ),
             
             # Coluna 2 - Elevação
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{elevation}", size=30, weight=ft.FontWeight.BOLD),
-                    ft.Text("Elevação", size=12, color=ft.colors.GREY_600),
+                    ft.Text(f"{elevation}", size=28, weight=ft.FontWeight.BOLD),
+                    txtElevation,
                 ], alignment=ft.MainAxisAlignment.CENTER),
-                width=150,
+                width=110,
                 height=100,
             ),
             
@@ -108,14 +155,14 @@ def main(page: ft.Page):
             # Coluna 3 - Tempo
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{time}", size=30, weight=ft.FontWeight.BOLD),
-                    ft.Text("Tempo de movimentação", size=12, color=ft.colors.GREY_600),
+                    ft.Text(f"{time}", size=28, weight=ft.FontWeight.BOLD),
+                    txtTime,
                 ], alignment=ft.MainAxisAlignment.CENTER),
-                width=150,
+                width=110,
                 height=100,
             )
         ],
-        alignment=ft.MainAxisAlignment.CENTER
+        alignment=ft.MainAxisAlignment.SPACE_EVENLY
     )
 
     linha_horizontal = ft.Divider(height=2, color=ft.colors.GREY_300)
@@ -127,14 +174,7 @@ def main(page: ft.Page):
     link = ft.GestureDetector(
         content=ft.Text(
             spans=[
-                ft.TextSpan(
-                    f"Ver mais de {name} (Strava)",
-                    on_click=lambda e: e.page.launch_url(f"{domain}"),
-                    style=ft.TextStyle(
-                        color=ft.colors.BLUE,
-                        decoration=ft.TextDecoration.UNDERLINE,
-                    )
-                )
+                txtViewMore
             ]
         ),
         mouse_cursor=ft.MouseCursor.CLICK  # Adicione aqui!
@@ -142,10 +182,10 @@ def main(page: ft.Page):
 
     page.add(link)
    
-    #if conteudo:
-        # Criar nome de arquivo
-        # nome_arquivo = dominio.split('//')[-1].replace('/', '_') + '.txt'
-        # save_content(conteudo, nome_arquivo)
-        # print(conteudo)
+    # if conteudo:
+    #     # Criar nome de arquivo
+    #     # nome_arquivo = dominio.split('//')[-1].replace('/', '_') + '.txt'
+    #     # save_content(conteudo, nome_arquivo)
+    #     print(conteudo)
 
-ft.app(target=main)
+ft.app(target=main, view=ft.WEB_BROWSER)
