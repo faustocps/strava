@@ -35,7 +35,7 @@ def main(page: ft.Page):
                 ft.dropdown.Option("es", "Español")
         ],
         on_change=change_language,
-        width=140
+        width=150
     )
 
     page.title = current_lang["title"]
