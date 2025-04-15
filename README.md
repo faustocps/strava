@@ -1,3 +1,16 @@
+📌 Last activity (Strava)
+Aplicação varre perfil do usuário no Strava para capturar dados do usuário (BeautifulSoup)
+
+🚀 Funcionalidade
+Exibir última atividade do usuário inserida no Strava
+
+🛠️ Tecnologias Utilizadas
+Python 3.0
+Flet
+BeautifulSoup
+
+📦 Instalação
+
 Step 01: create venv
 
 ```
@@ -11,7 +24,7 @@ Step 02: run requirements
 RUN: pip install -r requirements.txt
 ```
 
-Step 03: execute file
+▶️ Execução
 
 ```
 Terminal: python3 main.py
