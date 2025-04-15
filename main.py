@@ -141,9 +141,8 @@ def main(page: ft.Page):
     )
 
     page.add(link)
-
    
-    if conteudo:
+    #if conteudo:
         # Criar nome de arquivo
         # nome_arquivo = dominio.split('//')[-1].replace('/', '_') + '.txt'
         # save_content(conteudo, nome_arquivo)
