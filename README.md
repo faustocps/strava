@@ -1,13 +1,13 @@
 📌 Last activity (Strava)
-Aplicação varre perfil do usuário no Strava para capturar dados do usuário (BeautifulSoup)
+	Aplicação varre perfil do usuário no Strava para capturar dados do usuário (BeautifulSoup)
 
 🚀 Funcionalidade
-Exibir última atividade do usuário inserida no Strava
+	Exibir última atividade do usuário inserida no Strava
 
 🛠️ Tecnologias Utilizadas
-Python 3.0
-Flet
-BeautifulSoup
+	Python 3.0
+	Flet
+	BeautifulSoup
 
 📦 Instalação
 
