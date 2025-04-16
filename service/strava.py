@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import os
 
 def scrape_website(url):
     try:
@@ -49,7 +48,7 @@ def save_content(content, filename):
         print(f"Erro ao salvar arquivo: {e}")     
 
 if __name__ == "__main__":
-    dominio = input("Digite o domínio (ex: https://deepseek.com): ")
+    dominio = input("Digite o domínio (ex: https://faustocps.com.br): ")
     
     # Adicionar protocolo se necessário
     if not dominio.startswith(('http://', 'https://')):

@@ -1,8 +1,9 @@
 import flet as ft
 
-from i18n import get_texts
-from mock import mock
-from strava import scrape_website
+from utils.i18n import get_texts
+from utils.mock import mock
+from service.strava import scrape_website
+from utils.image import get_image
 
 domain = 'https://www.strava.com/athletes/faustocps'
 
@@ -79,12 +80,6 @@ def main(page: ft.Page):
             url=domain
         )
     
-    # ft.TextButton(
-    #     current_lang["view_more_strava"].format(name=name),
-    #     on_click=lambda e: e.page.launch_url(f"{domain}")
-    # )
-
-
     page.add(
         ft.Text(f"{fullname}", size=24, color="#e7520b")
     )
@@ -104,15 +99,12 @@ def main(page: ft.Page):
         ft.Text(f"{date}", size=14)
     )
 
-    # Icons.DIRECTIONS_RUN
-
     page.add(ft.Column(
             [
                ft.Container(
                     content=ft.Row([
-                        ft.Text(f"{type}", color="#e7520b", size=24),
-                        # ft.Icon(name=fts.icons.PEDAL_BIKE, color="#e7520b", size=30),
-                        # ft.Icon(name="fa-regular fa-bicycle", color=ft.colors.ORANGE)  
+                        ft.Text(f"{type}", color="#e7520b", size=30),
+                        ft.Image(src=get_image(type),  width=30, height=30, color="#e7520b" ),
                     ], 
                     alignment=ft.MainAxisAlignment.CENTER),
                     padding=ft.padding.only(top=50)
@@ -172,4 +164,4 @@ def main(page: ft.Page):
     #     # save_content(conteudo, nome_arquivo)
     #     print(conteudo)
 
-ft.app(target=main, view=ft.WEB_BROWSER)
+ft.app(target=main, view=ft.WEB_BROWSER, assets_dir="assets")
