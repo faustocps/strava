@@ -3,7 +3,7 @@ import flet as ft
 from utils.i18n import get_texts
 from utils.mock import mock
 from service.strava import scrape_website
-from utils.image import get_image
+from utils.image import get_image, display_elevation
 
 domain = 'https://www.strava.com/athletes/faustocps'
 
@@ -117,7 +117,7 @@ def main(page: ft.Page):
             # Coluna 1 - Distância
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{distance}", size=28, weight=ft.FontWeight.BOLD),
+                    ft.Text(f"{distance}", size=26, weight=ft.FontWeight.BOLD),
                     txtDistance,
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 width=110,
@@ -126,19 +126,19 @@ def main(page: ft.Page):
             
             # Coluna 2 - Elevação
             ft.Container(
+                visible=display_elevation(type),
                 content=ft.Column([
-                    ft.Text(f"{elevation}", size=28, weight=ft.FontWeight.BOLD),
+                    ft.Text(f"{elevation}", size=26, weight=ft.FontWeight.BOLD),
                     txtElevation,
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 width=110,
                 height=100,
             ),
             
-           
             # Coluna 3 - Tempo
             ft.Container(
                 content=ft.Column([
-                    ft.Text(f"{time}", size=28, weight=ft.FontWeight.BOLD),
+                    ft.Text(f"{time}", size=26, weight=ft.FontWeight.BOLD),
                     txtTime,
                 ], alignment=ft.MainAxisAlignment.CENTER),
                 width=110,
